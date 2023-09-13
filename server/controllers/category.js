@@ -22,44 +22,30 @@ export const createCategory = async(req, res)=>{
     }
 }
 
-
-export const updateCategory = async(req, res)=>{
+export const updateCategory = async(req, res)=>{ // not complete...
     try{
-        const { name } = req.body;
-        const existingCategory = await Category.findOne({name});
-        if(existingCategory){
-            return res.status(400).json({error: "Category already exists with this name"});
+        const { slug, categoryId } = req.params;
+        const singleCategory = await Category.findById({_id: categoryId});
+        if(!singleCategory){
+            return res.status(400).json({error: "no Category found.."});
         }
-        const category = new Category({
-            name,
-            slug: slugify(name), // cloth man ---> cloth-man
-        })
-
-        await category.save();
-
-        return res.status(200).json({message: 'category created....'});
+        return res.status(200).json(singleCategory);
+        //const updatedCategory = await Category.findByIdAndUpdate({_id: categoryId})
     }catch(err){
-        return res.json({error: error.message});
+        return res.json({error: err.message});
     }
 }
 
 export const deleteCategory = async(req, res)=>{
     try{
-        const { name } = req.body;
-        const existingCategory = await Category.findOne({name});
-        if(existingCategory){
-            return res.status(400).json({error: "Category already exists with this name"});
+        const { slug } = req.params;
+        const singleCategory = await Category.findOne({ slug });
+        if(!singleCategory){
+            return res.status(400).json({error: "no Category found.."});
         }
-        const category = new Category({
-            name,
-            slug: slugify(name), // cloth man ---> cloth-man
-        })
-
-        await category.save();
-
-        return res.status(200).json({message: 'category created....'});
+        return res.status(200).json(singleCategory);
     }catch(err){
-        return res.json({error: error.message});
+        return res.json({error: err.message});
     }
 }
 

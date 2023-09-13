@@ -92,24 +92,35 @@ export const activateAccount = async (req, res, next) => {
     }
 }
 
-export const loginUser = async (req, res, next) => {
+export const loginUser = async (req, response, next) => {
     try {
         const { email, password } = req.body;
-        const existingUser = await User.find({ email });
-        console.log(existingUser);
+        const existingUser = await User.findOne({ email });
+        console.log(existingUser.password);
         if(!existingUser){
             return res.status(404).json({error: "user does not exist. Please register."});
         }
-        const isPasswordMatched = await bcrypt.compare(password, existingUser.password);
-        if(!isPasswordMatched){
-            return res.status(400).json({error: "Password does not exist."});
-        }
-        const token = jwt.sign(existingUser, dev.app.jwtSecretKey, {expiresIn: "10m"});
-        return res.status(200).json({message: 'user signed in successfully.', user:{
-            name: existingUser.name,
-            email: existingUser.email,
-            address: existingUser.address,
-        }})
+        bcrypt.compare(password, existingUser.password, function(err, res){
+            if(err){
+                return response.status(400).json({error: "Password does not exist."});
+            }
+            else {
+                return response.status(200).json({message: 'user signed in successfully.', user:{
+                    name: existingUser.name,
+                    email: existingUser.email,
+                    address: existingUser.address,
+                }})
+            }
+        });
+        // if(!isPasswordMatched){
+        //     return res.status(400).json({error: "Password does not exist."});
+        // }
+        // const token = jwt.sign(existingUser, dev.app.jwtSecretKey, {expiresIn: "10m"});
+        // return res.status(200).json({message: 'user signed in successfully.', user:{
+        //     name: existingUser.name,
+        //     email: existingUser.email,
+        //     address: existingUser.address,
+        // }})
 
     }catch(err){
         return res.status(500).json({message: 'error in login...', error: err.message})
