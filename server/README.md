@@ -4,6 +4,7 @@
 
 ## Step 2: User management API
 - create schema and model
+    - validation with express validator
 - register
 - login
 
