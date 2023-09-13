@@ -6,6 +6,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import dev from "./config/index.js"
 import userRoute from "./routes/user.js";
+import categoryRoute from "./routes/category.js";
 
 const port = dev.app.serverPort;
 const app = express();
@@ -18,7 +19,8 @@ app.use(express.urlencoded({extended: true}));
 app.get("/", (req, res) => {
     res.send('api is working fine...');
 })
-app.use("/api",userRoute);
+app.use("/api/user",userRoute);
+app.use("/api/categories",categoryRoute);
 
 app.use((req, res, next)=>{
     return res.status(404).json({

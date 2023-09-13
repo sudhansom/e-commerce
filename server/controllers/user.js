@@ -14,8 +14,8 @@ export const registerUser = async(req, res, next) => {
             return res.status(400).json({message: "user already exists"})
         }
         // create an user:
-        const salt = await bcrypt.genSalt(12);
-        const hashPassword = await bcrypt.hash(password, salt);
+        //const salt = await bcrypt.genSalt(12);
+        const hashPassword = await bcrypt.hash(password, 10);
 
         // store the user data temporarily inside json token
         // const token = jwt.sign({name, email, hashPassword, address}, dev.app.jwtSecretKey, {
@@ -100,7 +100,6 @@ export const loginUser = async (req, res, next) => {
         if(!existingUser){
             return res.status(404).json({error: "user does not exist. Please register."});
         }
-        // const isPasswordMatched = await bcrypt.compare(password, existingUser.password);
         const isPasswordMatched = await bcrypt.compare(password, existingUser.password);
         if(!isPasswordMatched){
             return res.status(400).json({error: "Password does not exist."});
