@@ -19,7 +19,7 @@ const userSchema = new Schema(
             type: String,
             required: [true, "password is required"],
             minlength: 6,
-            maxlength: 30,
+            maxlength: 64,
         },
         address: {
             type: String,

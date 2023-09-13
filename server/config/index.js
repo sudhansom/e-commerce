@@ -11,7 +11,7 @@ export const dev = {
         smtpPassword: "process.env.SMTP_PASSWORD",
     },
     db: {
-        mongoUrl: process.env.MONGO_URL || "mongodb+srv://mtU1p265AJ28Kjoc:mtU1p265AJ28Kjoc@cluster0.3wccq.mongodb.net/ecommerce"
+        mongoUrl: process.env.MONGO_URL || "mongodb+srv://mtU1p265AJ28Kjoc:mtU1p265AJ28Kjoc@cluster0.3wccq.mongodb.net/ecommerce-full-stack"
     }
 }
 
